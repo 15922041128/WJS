@@ -138,16 +138,21 @@ function GP_popupConfirmMsg(msg) { //v1.0
 <div class="btn-group">
 <a type="button" class="btn btn-default btn-sm <?php if($pagetabs == "user") { echo "active";} ?>" href="<?php echo $pagename; ?>?pagetab=user"><?php echo $multilingual_user_list_title; ?></a>
 <a type="button" class="btn btn-default btn-sm <?php if($pagetabs == "disuser") { echo "active";} ?>" href="<?php echo $pagename; ?>?pagetab=disuser"><?php echo $multilingual_user_list_showdis; ?></a>
+<!-- wangzi add -->
+<button type="button" class="btn btn-default btn-sm" name="button2" id="button2" onClick="javascript:self.location='user_add.php';">
+<span class="glyphicon glyphicon-plus-sign"></span> <?php echo $multilingual_user_new; ?>
+</button>
 </div>
 </div>
 
 
-
+<!-- wangzi removed 
 <div class="float_right">
 <button type="button" class="btn btn-default btn-sm" name="button2" id="button2" onClick="javascript:self.location='user_add.php';">
 <span class="glyphicon glyphicon-plus-sign"></span> <?php echo $multilingual_user_new; ?>
 </button>
 </div>
+-->
 
 </div>
 <div class="clearboth"></div>
@@ -200,7 +205,7 @@ function GP_popupConfirmMsg(msg) { //v1.0
 	  </div>
 
 
-  <table class="table table-striped table-hover glink" width="98%" >
+  <table class="table table-striped table-hover glink" width="98%" style="white-space:nowrap;">
     <thead>
       <tr>
         <th>
@@ -280,6 +285,7 @@ function GP_popupConfirmMsg(msg) { //v1.0
 		
 <?php/*wangzi add start*/?>
 	
+	 <!-- wangzi removed
 	 <th>
 		<a href="default_user.php?<?php echo $current_url; ?>&sort=tk_user_birthday&order=<?php 
 	  if ( $sortlist <> "tk_user_birthday"){
@@ -298,6 +304,7 @@ function GP_popupConfirmMsg(msg) { //v1.0
 	  }
 	  ?>>
 	  <?php echo $multilingual_user_birthday; ?></a></th>
+	  -->
 	  
 	  <th>
 		<a href="default_user.php?<?php echo $current_url; ?>&sort=tk_user_gender&order=<?php 
@@ -451,6 +458,7 @@ function GP_popupConfirmMsg(msg) { //v1.0
 	  ?>>
 	  <?php echo $multilingual_user_post; ?></a></th>
 	  
+	  <!-- 
 	  <th>
 		<a href="default_user.php?<?php echo $current_url; ?>&sort=tk_user_bef_comp&order=<?php 
 	  if ( $sortlist <> "tk_user_bef_comp"){
@@ -469,6 +477,7 @@ function GP_popupConfirmMsg(msg) { //v1.0
 	  }
 	  ?>>
 	  <?php echo $multilingual_user_bef_comp; ?></a></th>
+	  -->
 <?php/*wangzi add end*/?>
 		
         <th>
@@ -522,7 +531,9 @@ case 5:
 		<td><?php echo $row_Recordset1['tk_user_contact']; ?>&nbsp;</td>
         <td><a href="mailto:<?php echo $row_Recordset1['tk_user_email']; ?>"><?php echo $row_Recordset1['tk_user_email']; ?></a>&nbsp;</td>
         <?php/*wangzi add start*/?>
+        <!-- wangzi removed
         <td><?php echo $row_Recordset1['tk_user_birthday']; ?>&nbsp;</td>
+        -->
         <td><?php echo $row_Recordset1['tk_user_gender']; ?>&nbsp;</td>
         <td><?php echo $row_Recordset1['tk_user_city']; ?>&nbsp;</td>
         <td><?php echo $row_Recordset1['tk_user_working_life']; ?>&nbsp;</td>
@@ -531,7 +542,9 @@ case 5:
         <td><?php echo $row_Recordset1['tk_user_school']; ?>&nbsp;</td>
         <td><?php echo $row_Recordset1['tk_user_join_date']; ?>&nbsp;</td>
         <td><?php echo $row_Recordset1['tk_user_post']; ?>&nbsp;</td>
+        <!-- 
         <td><?php echo $row_Recordset1['tk_user_bef_comp']; ?>&nbsp;</td>
+        -->
         <?php/*wangzi add end*/?>
         <td><?php echo $row_Recordset1['tk_user_registered']; ?></td>
       </tr>

@@ -141,7 +141,22 @@ function pinyin($zh){
          }  
      }  
      return $ret;  
-}    
+}
+
+
+function pinyin2($str){
+	
+	$substr = mb_substr($str,0,1,'utf-8');
+	
+	if ("魏" == $substr) {
+		return "W";
+	} else if ("闫" == $substr) {
+		return "Y";
+	} else {
+		return pinyin($substr);		
+	}
+
+} 
 
 //add lastuser
 function pushlastuse($uid, $name, $myid){  
@@ -1181,12 +1196,40 @@ return $tktype_arr;
 }
 
 // wangzi add
-//get user 
-function get_user_select_do() {
+// checkIsWorkingDay
+function checkIsWorkingDay($array, $logDay){
+	while(list($key,$val)= each($array)) { 
+	  if($key == $logDay) {
+	  	return $val;
+	  }
+	} 
+	// default is working day
+	return 1;
+}
+
+// getPreWorkingDay
+function getPreWorkingDay($array, $preDay){
+	foreach ($array as $key => $val) { 
+	 	if($key == $preDay) {
+	 		if ($val == 1) {
+	 			return $preDay;
+	 		} else {
+	 			$preDay = date('Ymd', strtotime('-1 day', strtotime($preDay)));
+	 			return getPreWorkingDay($array, $preDay);
+	 		}
+	  	}
+	}
+	return $preDay;
+}
+
+// get user 
+// test method
+function get_user_select_test() {
 global $tankdb;
 global $database_tankdb;
-  
-$query_user = sprintf("SELECT * FROM tk_user WHERE (tk_user_rank > '0' AND tk_user_rank < '4') or (uid = %s) ORDER BY CONVERT(tk_display_name USING gbk )", GetSQLValueString($_SESSION['MM_uid'], "int"));
+
+$query_user = sprintf("SELECT * FROM tk_user WHERE  (uid = %s or uid = %s or uid = %s or uid = %s or uid = %s) ORDER BY CONVERT(tk_display_name USING gbk )", GetSQLValueString("101", "int"), GetSQLValueString("108", "int"),GetSQLValueString("1", "int"),GetSQLValueString("43", "int"),GetSQLValueString("9", "int"));  
+// $query_user = sprintf("SELECT * FROM tk_user WHERE (tk_user_rank > '0' AND tk_user_rank < '4') or (uid = %s) ORDER BY CONVERT(tk_display_name USING gbk )", GetSQLValueString($_SESSION['MM_uid'], "int"));
 $userRS = mysql_query($query_user, $tankdb) or die(mysql_error());
 $row_user = mysql_fetch_assoc($userRS);
  

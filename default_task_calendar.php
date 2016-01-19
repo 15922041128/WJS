@@ -39,6 +39,16 @@ $tasktype = $_GET['tasktype'];
 $nowuser = $_SESSION['MM_uid'];
 
 mysql_select_db($database_tankdb, $tankdb);
+// wangzi add
+$dayArray = array();
+$queryDaySql = "select * from tk_day";
+$dayResult = mysql_query($queryDaySql);
+while($row=mysql_fetch_array($dayResult)){
+	$day->row_day = $row["day"];
+	$day->row_isWork = $row["isWork"];
+	$dayArray[$row["day"]] = $row["isWork"];
+}
+
 $sql=sprintf("SELECT * FROM tk_task_byday 
 inner join tk_status on tk_task_byday.csa_tb_status=tk_status.id 
 WHERE csa_tb_backup1= %s", GetSQLValueString($taskid, "int"));
@@ -115,6 +125,7 @@ $day = date("j", $today);
 $logYM = date("Ym", $today);
 $curDay = date("Ymd");
 $preDay = date("Ymd", time() - 24*60*60);
+$preDay = getPreWorkingDay($dayArray, $preDay);
 
 $fstDay = $weekday_index[date("D",$today- ($day-1)*24*60*60)];
 
@@ -133,6 +144,10 @@ for($i=1; $i<=$monthTotalDay; $i++)
 		$logDay = '0'.$i;
 	}
 	$logDay = $logYM.$logDay;
+	
+	// wangzi add
+	$isWork = checkIsWorkingDay($dayArray, $logDay);
+	
 	$fstDay++;
 	$outstylestr = "onmouseover=\"javascript:this.className=\'day_hover_style\';\" onmouseout=\"javascript:this.className=\'onday_style\';\"";
 	$outstyle = str_replace('\"',   '"',   $outstylestr); 
@@ -143,7 +158,7 @@ for($i=1; $i<=$monthTotalDay; $i++)
 	$i_day = date("Ymd", mktime(0,0,0,
 		substr($nowdate,4,2), $i, substr($nowdate,0,4)));
 	if($fstDay % 7==1) $out_list .= "<TR>\n";
-	if($day==$i) $out_list .= "\t<TD class='onday_style' $outstyle valign='top'>
+	if($day==$i) {$out_list .= "\t<TD class='onday_style' $outstyle valign='top'>
 <script type='text/javascript'>
 function op$i_day()
 {
@@ -157,7 +172,7 @@ function vi$i_day()
 }
 </script>
 <script type='text/javascript'>
-if (typeof(d$i_day)=='undefined' && '$nowuser' == '$userid' && ($curDay==$logDay || $preDay==$logDay))
+if (typeof(d$i_day)=='undefined' && '$nowuser' == '$userid' && ($curDay==$logDay || $preDay==$logDay || $isWork == 0))
 {
 document.write('<div onclick=\'op$i_day();\' title=\'$multilingual_calendar_addlog\' class=\'day_mouse\'><div class=\'day_no\'>$i</div><div  class=\'day_main\'></div></div>')
 }
@@ -173,9 +188,10 @@ document.write(d$i_day)
 document.write('</div></div>')
 }
 </script>
-	</TD>\n";
+	</TD>\n";}
 	// wangzi modify
-	else $out_list .= "\t<TD class='day_style' $outstylea  valign='top'>
+	else {
+		$out_list .= "\t<TD class='day_style' $outstylea  valign='top'>
 <script type='text/javascript'>
 function op$i_day()
 {
@@ -188,7 +204,7 @@ function vi$i_day()
 }
 </script>
 <script type='text/javascript'>
-if (typeof(d$i_day)=='undefined' && '$nowuser' == '$userid' && ($curDay==$logDay || $preDay==$logDay))
+if (typeof(d$i_day)=='undefined' && '$nowuser' == '$userid' && ($curDay==$logDay || $preDay==$logDay || $isWork == 0))
 {
 document.write('<div onclick=\'op$i_day();\' title=\'$multilingual_calendar_addlog\' class=\'day_mouse\'><div class=\'day_no\'>$i</div><div  class=\'day_main\'></div></div>')
 }
@@ -204,6 +220,7 @@ document.write('</div></div>')
 }
 </script>
 	</TD>\n";
+	}
 	if($fstDay % 7==0) $out_list .= "</TR>\n";
 }
 

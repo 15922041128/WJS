@@ -18,12 +18,15 @@ $pagename = end(explode("/",$self));
 <hr class="set_menu_hr" size="1">
 
 <span class="<?php if($pagename == "project_status.php"){echo "set_menu_onfocus";} else {echo "set_menu_nofocus";}?>"><a href="project_status.php"><?php echo $multilingual_projectstatus_title; ?></a></span>
+<!-- 
 <span class="<?php if($pagename == "project_member.php"){echo "set_menu_onfocus";} else {echo "set_menu_nofocus";}?>"><a href="project_member.php"><?php echo $multilingual_projectmem_title; ?></a></span>
-
+-->
 <hr class="set_menu_hr" size="1">
 
 <span class="<?php if($pagename == "team_list.php"){echo "set_menu_onfocus";} else {echo "set_menu_nofocus";}?>"><a href="team_list.php"><?php echo $multilingual_dept_title; ?></a></span>
 
-<hr class="set_menu_hr" size="1">
 
+<!-- 
+<hr class="set_menu_hr" size="1">
 <span class="<?php if($pagename == "update.php"){echo "set_menu_onfocus";} else {echo "set_menu_nofocus";}?>"><a href="update.php" ><?php echo $multilingual_version_title; ?></a></span>
+-->

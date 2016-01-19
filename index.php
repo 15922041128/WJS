@@ -54,14 +54,24 @@ $exam_totaltask=$row_Recordset_sumtotal['count_task'];
   <?php if($_SESSION['MM_rank'] > "4") { ?>
   <a type="button" class="btn btn-default btn-sm <?php if($pagetabs == "alltask") { echo "active";} ?>" href="<?php echo $pagename; ?>?select=&select_project=&select_year=<?php echo date("Y");?>&textfield=<?php echo date("m");?>&select3=-1&select4=%&select_prt=&select_temp=&inputtitle=&select1=-1&select2=%&create_by=%&select_type=&inputid=&inputtag=&pagetab=alltask"><?php echo $multilingual_default_alltask;?></a>
   <?php }  ?> 
+  
+  <?php/*wangzi add*/?>
+  <?php if($_SESSION['MM_rank'] > "2" ) { ?>
+		<button type="button" class="btn btn-default btn-sm" name="button2" id="button2" onclick="addtask();">
+		<span class="glyphicon glyphicon-plus-sign"></span> <?php echo $multilingual_default_newtask; ?>
+		</button>
+  <?php }  ?> 
+  
 </div><!--btn-group -->
 </div><!--float_left -->
 <?php if($_SESSION['MM_rank'] > "2" ) { ?>
+<!-- wangzi removed 
 <div class="float_right">
 		<button type="button" class="btn btn-default btn-sm" name="button2" id="button2" onclick="addtask();">
 		<span class="glyphicon glyphicon-plus-sign"></span> <?php echo $multilingual_default_newtask; ?>
 		</button>
 </div>
+-->
 <?php }  ?> 
 
 <div class="clearboth"></div>

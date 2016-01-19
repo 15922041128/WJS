@@ -36,7 +36,6 @@ if(frm != null && subWeb != null)
     <h5 class="font_big18 fontbold"><?php echo $multilingual_project_view_wbs; ?></h5>
     
 <script type="text/javascript">
-        <!--
 		var r =<?php echo $str; ?>;
 
         d = new dTree('d');
@@ -46,7 +45,6 @@ if(frm != null && subWeb != null)
             d.add(Number(r[i].id),Number(r[i].pid),r[i].name,"default_task_edit.php?pagetab=alltask&editID="+r[i].id,r[i].title);
         }
         document.write(d);
-    //-->
 </script>
     <?php } else{ ?>
     <div style="margin:15px">

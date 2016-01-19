@@ -81,16 +81,25 @@ if (isset($_GET['pagetab'])) {
 <a type="button" class="btn btn-default btn-sm <?php if($pagetabs == "closeprj") { echo "active";} ?>" href="<?php echo $pagename; ?>?pagetab=closeprj" >
 <?php echo $multilingual_project_closeprj;?>
 </a>
+
+<?php/*wangzi add*/?>
+<?php if($_SESSION['MM_rank'] > "3") {  ?>
+<button type="button" class="btn btn-default btn-sm" name="button2" id="button2" onclick="javascript:self.location='project_add.php';">
+	<span class="glyphicon glyphicon-plus-sign"></span> <?php echo $multilingual_projectlist_new; ?>
+</button>
+<?php }  ?> 
 </div>
 
 </div>
 
 <?php if($_SESSION['MM_rank'] > "3") {  ?>
+<!-- wangzi removed
 <div class="float_right">
 <button type="button" class="btn btn-default btn-sm" name="button2" id="button2" onclick="javascript:self.location='project_add.php';">
 <span class="glyphicon glyphicon-plus-sign"></span> <?php echo $multilingual_projectlist_new; ?>
 </button>
 </div>
+-->
 <?php }  ?> 
 
 </div>

@@ -425,7 +425,8 @@ document.getElementById('tab_' + i).className = (i == n) ? 'onhover' : 'none';
 			<table width="100%"  style="line-height:40px;">
 		     <tr>
 		     <?php/*wangzi modify*/?>
-             <?php if($_SESSION['MM_rank'] > "4" || $row_DetailRS1['project_to_user'] == $_SESSION['MM_uid']) { ?>
+		     <?php /* if($_SESSION['MM_rank'] > "4" || $row_DetailRS1['project_to_user'] == $_SESSION['MM_uid']) { */?> 
+             <?php if(true) { ?>
 			 <td width="12%">
 			 <a href="default_task_add.php?projectID=<?php echo $row_DetailRS1['id']; ?>&formproject=1" >
 			 <span class="glyphicon glyphicon-random"></span> <?php echo $multilingual_project_newtask; ?></a></td>

@@ -379,7 +379,7 @@ do {
 					 <option value='<?php echo $val["uid"]?>, ,<?php echo $val["name"]?>' 
 		  <?php if (!(strcmp($val["uid"], $user_id)) && $copy==-1) {echo "selected=\"selected\"";} else if ($copy==1){ if(!(strcmp($val["uid"], $task_arr['to']))) {echo "selected=\"selected\"";} }?>
 		  ><?php 
-		   $py = substr( pinyin($val["name"]), 0, 1 );
+		   $py = substr( pinyin2($val["name"]), 0, 1 );
 		  echo $py."-".$val["name"]?></option>
 					 <?php } ?>  
 					 </optgroup>
@@ -399,7 +399,7 @@ do {
 					 <option value="<?php echo $val["uid"]?>" 
 		  <?php if (!(strcmp($val["uid"], "{$_SESSION['MM_uid']}")) && $copy==-1) {echo "selected=\"selected\"";} else if($copy==1){ if (!(strcmp($val["uid"], $task_arr['from'])) ) {echo "selected=\"selected\"";} } ?>
 		  ><?php 
-		   $py = substr( pinyin($val["name"]), 0, 1 );
+		   $py = substr( pinyin2($val["name"]), 0, 1 );
 		  echo $py."-".$val["name"]?></option>
 					 <?php } ?>  
 
@@ -419,7 +419,7 @@ do {
 				  
 				  <?php foreach($user_arr as $key => $val){  ?>
 					 <option value='{"uid":"<?php echo $val["uid"]?>", "uname":<?php echo json_encode($val["name"])?> }' <?php if($copy==1){if (in_2array($val["uid"], $ccarr)==1 ) {echo "selected=\"selected\"";} } ?> ><?php 
-		   $py = substr( pinyin($val["name"]), 0, 1 );
+		   $py = substr( pinyin2($val["name"]), 0, 1 );
 		  echo $py."-".$val["name"]?></option>
 					 <?php } ?> 
 

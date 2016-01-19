@@ -70,7 +70,7 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>WSS - <?php echo $multilingual_projectstatus_title; ?></title>
+<title>WJS - <?php echo $multilingual_projectstatus_title; ?></title>
 <script type="text/javascript" src="srcipt/jquery.js"></script>
 <script type="text/javascript" src="srcipt/js.js"></script>
 

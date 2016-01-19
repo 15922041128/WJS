@@ -536,7 +536,7 @@ case 1:
 			<a onClick="javascript:self.location='default_task_plan.php?editID=<?php echo $row_Recordset_task['TID']; ?>';" class="mouse_over"><span class="glyphicon glyphicon-pencil"></span> <?php echo $multilingual_global_action_edit; ?></a>
             </td>
 			<?php }  ?>
-            <?php if ($_SESSION['MM_rank'] > "4") {  ?>
+            <?php if (($row_Recordset_task['csa_from_user'] == $_SESSION['MM_uid'] && $_SESSION['MM_rank'] > "1") || $_SESSION['MM_rank'] > "4") {  ?>
 			<td width="10%">
 			<a  class="mouse_over" onClick="javascript:if(confirm( '<?php 
 	 if($row_Recordset_countlog['count_log'] == "0"){  

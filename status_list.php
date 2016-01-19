@@ -77,7 +77,7 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>WSS - <?php echo $multilingual_taskstatus_title; ?></title>
+<title>WJS - <?php echo $multilingual_taskstatus_title; ?></title>
 <link href="skin/themes/base/tk_style.css" rel="stylesheet" type="text/css" />
 <link href="skin/themes/base/lhgcheck.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="srcipt/lhgcore.js"></script>

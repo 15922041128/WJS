@@ -1364,7 +1364,19 @@ echo $out_sumbd;
 ?>
 &nbsp;</td>
      </tr>
-     <?php do { ?>
+<?php
+// wangzi add
+mysql_select_db($database_tankdb, $tankdb);
+$dayArray = array();
+$queryDaySql = "select * from tk_day";
+$dayResult = mysql_query($queryDaySql);
+while($row=mysql_fetch_array($dayResult)){
+	$day->row_day = $row["day"];
+	$day->row_isWork = $row["isWork"];
+	$dayArray[$row["day"]] = $row["isWork"];
+}
+?>     
+<?php do { ?>
      <tr>
          <td class="week_style_padtd"  width="100px"><?php echo $row_Recordset1['task_status_display']; ?></td>
          <td class="week_style_padtd" width="80px">
@@ -1483,6 +1495,8 @@ $m1day1d = date("Y-m-d", strtotime("last Sunday", $time));
 // wangzi add
 $curday = date("Ymd");;
 $pre_day = date("Ymd", time() - 24*60*60);
+$pre_day = getPreWorkingDay($dayArray, $pre_day);
+$isWork = checkIsWorkingDay($dayArray, $m1day1);
 
 $out_row = "
 <script type='text/javascript'>
@@ -1503,7 +1517,7 @@ if ($YEAR == '0000' || $MONTH == '00')
 {
 document.write('<div title=\'$multilingual_calendar_donoedit\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd weekend_style\'>&nbsp;')
 }
-else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day==$m1day1))
+else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day == $m1day1 || $isWork == 0))
 {
 document.write('<div onclick=\'op$row_tid$m1day1();\' title=\'$m1day1d $multilingual_calendar_addlog\' class=\'day_mouse_nul\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd weekend_style\'>&nbsp;')
 }
@@ -1529,6 +1543,8 @@ $m1day1d = date("Y-m-d", strtotime("last Sunday +1 days", $time));
 // wangzi add
 $curday = date("Ymd");
 $pre_day = date("Ymd", time() - 24*60*60);
+$pre_day = getPreWorkingDay($dayArray, $pre_day);
+$isWork = checkIsWorkingDay($dayArray, $m1day1);
 
 $out_row = "
 <script type='text/javascript'>
@@ -1548,7 +1564,7 @@ if ($YEAR == '0000' || $MONTH == '00')
 {
 document.write('<div title=\'$multilingual_calendar_donoedit\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
-else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day==$m1day1))
+else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day == $m1day1 || $isWork == 0))
 {
 document.write('<div onclick=\'op$row_tid$m1day1();\' title=\'$m1day1d $multilingual_calendar_addlog\' class=\'day_mouse_nul\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
@@ -1576,6 +1592,8 @@ $m1day1d = date("Y-m-d", strtotime("last Sunday +2 days", $time));
 // wangzi add
 $curday = date("Ymd");
 $pre_day = date("Ymd", time() - 24*60*60);
+$pre_day = getPreWorkingDay($dayArray, $pre_day);
+$isWork = checkIsWorkingDay($dayArray, $m1day1);
 
 $out_row = "
 <script type='text/javascript'>
@@ -1596,7 +1614,7 @@ if ($YEAR == '0000' || $MONTH == '00')
 {
 document.write('<div title=\'$multilingual_calendar_donoedit\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
-else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day==$m1day1))
+else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day == $m1day1 || $isWork == 0))
 {
 document.write('<div onclick=\'op$row_tid$m1day1();\' title=\'$m1day1d $multilingual_calendar_addlog\' class=\'day_mouse_nul\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
@@ -1624,6 +1642,8 @@ $m1day1d = date("Y-m-d", strtotime("last Sunday +3 days", $time));
 // wangzi add
 $curday = date("Ymd");
 $pre_day = date("Ymd", time() - 24*60*60);
+$pre_day = getPreWorkingDay($dayArray, $pre_day);
+$isWork = checkIsWorkingDay($dayArray, $m1day1);
 
 $out_row = "
 <script type='text/javascript'>
@@ -1644,7 +1664,7 @@ if ($YEAR == '0000' || $MONTH == '00')
 {
 document.write('<div title=\'$multilingual_calendar_donoedit\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
-else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day==$m1day1))
+else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day == $m1day1 || $isWork == 0))
 {
 document.write('<div onclick=\'op$row_tid$m1day1();\' title=\'$m1day1d $multilingual_calendar_addlog\' class=\'day_mouse_nul\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
@@ -1672,6 +1692,8 @@ $m1day1d = date("Y-m-d", strtotime("last Sunday +4 days", $time));
 // wangzi add
 $curday = date("Ymd");
 $pre_day = date("Ymd", time() - 24*60*60);
+$pre_day = getPreWorkingDay($dayArray, $pre_day);
+$isWork = checkIsWorkingDay($dayArray, $m1day1);
 
 $out_row = "
 <script type='text/javascript'>
@@ -1692,7 +1714,7 @@ if ($YEAR == '0000' || $MONTH == '00')
 {
 document.write('<div title=\'$multilingual_calendar_donoedit\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
-else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day==$m1day1))
+else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day == $m1day1 || $isWork == 0))
 {
 document.write('<div onclick=\'op$row_tid$m1day1();\' title=\'$m1day1d $multilingual_calendar_addlog\' class=\'day_mouse_nul\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
@@ -1720,6 +1742,8 @@ $m1day1d = date("Y-m-d", strtotime("last Sunday +5 days", $time));
 // wangzi add
 $curday = date("Ymd");
 $pre_day = date("Ymd", time() - 24*60*60);
+$pre_day = getPreWorkingDay($dayArray, $pre_day);
+$isWork = checkIsWorkingDay($dayArray, $m1day1);
 
 $out_row = "
 <script type='text/javascript'>
@@ -1739,7 +1763,7 @@ if ($YEAR == '0000' || $MONTH == '00')
 {
 document.write('<div title=\'$multilingual_calendar_donoedit\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
-else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day==$m1day1))
+else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day == $m1day1 || $isWork == 0))
 {
 document.write('<div onclick=\'op$row_tid$m1day1();\' title=\'$m1day1d $multilingual_calendar_addlog\' class=\'day_mouse_nul\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd\'>&nbsp;')
 }
@@ -1767,6 +1791,8 @@ $m1day1d = date("Y-m-d", strtotime("last Sunday +6 days", $time));
 // wangzi add
 $curday = date("Ymd");
 $pre_day = date("Ymd", time() - 24*60*60);
+$pre_day = getPreWorkingDay($dayArray, $pre_day);
+$isWork = checkIsWorkingDay($dayArray, $m1day1);
 
 $out_row = "
 <script type='text/javascript'>
@@ -1787,7 +1813,7 @@ if ($YEAR == '0000' || $MONTH == '00')
 {
 document.write('<div title=\'$multilingual_calendar_donoedit\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd weekend_style\'>&nbsp;')
 }
-else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day==$m1day1))
+else if (typeof(d$row_tid$m1day1)=='undefined' && '$nowuser' == '$row_userid' && ($curday==$m1day1 || $pre_day == $m1day1 || $isWork == 0))
 {
 document.write('<div onclick=\'op$row_tid$m1day1();\' title=\'$m1day1d $multilingual_calendar_addlog\' class=\'day_mouse_nul\'>&nbsp;</div></td><td width=\'30px\' class=\'week_style_padtd weekend_style\'>&nbsp;')
 }
