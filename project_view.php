@@ -441,7 +441,7 @@ document.getElementById('tab_' + i).className = (i == n) ? 'onhover' : 'none';
 			 <?php } ?>
 			 
 			 <?php/*wangzi modify*/?>
-			 <?php if($_SESSION['MM_rank'] > "4" || ($_SESSION['MM_uid'] == $row_DetailRS1['project_to_user'] && $_SESSION['MM_rank'] > "1")) { ?>
+			 <?php if($_SESSION['MM_rank'] > "4" || (($_SESSION['MM_uid'] == $row_DetailRS1['project_to_user'] || $_SESSION['MM_uid'] == $row_DetailRS1['project_from_user']) && $_SESSION['MM_rank'] > "1")) { ?>
 			 <td width="10%">
 			 <a href="project_edit.php?editID=<?php echo $row_DetailRS1['id']; ?>">
 			 <span class="glyphicon glyphicon-pencil"></span> <?php echo $multilingual_global_action_edit; ?>			 </a>			 </td>

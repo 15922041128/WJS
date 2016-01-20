@@ -525,23 +525,28 @@ case 1:
 			
 			<?php/*wangzi modify*/?>
 			<?php if($_SESSION['MM_rank'] > "4") { ?>
+			<!-- 
 			<td width="10%">
 			<a onClick="addtask();" class="mouse_over"><span class="glyphicon glyphicon-share"></span> <?php echo $multilingual_default_task_copy; ?></a>
             </td>
+            -->
             <?php } ?>
 			<?php } ?>
             
-            <?php if (($row_Recordset_task['csa_create_user'] == $_SESSION['MM_uid'] && $_SESSION['MM_rank'] > "1") || $_SESSION['MM_rank'] > "4"  ) { ?>			
+            <?php if ((($row_Recordset_task['csa_create_user'] == $_SESSION['MM_uid'] || $row_Recordset_task['csa_from_user'] == $_SESSION['MM_uid']) && $_SESSION['MM_rank'] > "1") || $_SESSION['MM_rank'] > "4"  ) { ?>	
+            <td width="10%">
+			<a onClick="addtask();" class="mouse_over"><span class="glyphicon glyphicon-share"></span> <?php echo $multilingual_default_task_copy; ?></a>
+            </td>
+            		
 			<td width="10%">
 			<a onClick="javascript:self.location='default_task_plan.php?editID=<?php echo $row_Recordset_task['TID']; ?>';" class="mouse_over"><span class="glyphicon glyphicon-pencil"></span> <?php echo $multilingual_global_action_edit; ?></a>
             </td>
-			<?php }  ?>
-            <?php if (($row_Recordset_task['csa_from_user'] == $_SESSION['MM_uid'] && $_SESSION['MM_rank'] > "1") || $_SESSION['MM_rank'] > "4") {  ?>
-			<td width="10%">
+            
+            <td width="10%">
 			<a  class="mouse_over" onClick="javascript:if(confirm( '<?php 
-	 if($row_Recordset_countlog['count_log'] == "0"){  
-	  echo $multilingual_global_action_delconfirm;
-	  } else { echo $multilingual_global_action_delconfirm2;} ?>'))self.location= 'task_del.php?delID=<?php echo $row_Recordset_task['TID']; ?>';"><span class="glyphicon glyphicon-remove"></span> <?php echo $multilingual_global_action_del; ?></a>
+			 if($row_Recordset_countlog['count_log'] == "0"){  
+	 			 echo $multilingual_global_action_delconfirm;
+	  		} else { echo $multilingual_global_action_delconfirm2;} ?>'))self.location= 'task_del.php?delID=<?php echo $row_Recordset_task['TID']; ?>';"><span class="glyphicon glyphicon-remove"></span> <?php echo $multilingual_global_action_del; ?></a>
             </td>
 			<?php }  ?>
 			<td>
