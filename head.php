@@ -98,7 +98,9 @@ if(strpos($_SERVER["HTTP_USER_AGENT"],"MSIE 8.0") || strpos($_SERVER["HTTP_USER_
                   <li><a href="setting.php?type=setting"><?php echo $multilingual_head_backend; ?></a></li>
 				  <?php }  ?>
 
+				  <!-- 
                   <li><?php echo $multilingual_head_help; ?></li>
+                  -->
                   <li class="divider"></li>
                   <li><a href="<?php echo $logoutAction ?>"  ><?php echo $multilingual_head_logout; ?></a></li>
                 </ul>

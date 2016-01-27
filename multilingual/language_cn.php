@@ -716,5 +716,14 @@ $multilingual_getqrcode = "使用微信扫描二维码，或搜索公众帐号ws
 // *** browser check
 $multilingual_browser_check = "<h4><b>您的浏览器版本过低，为了提升用户体验，WSS不再对IE9以下版本的浏览器进行支持(使用IE9以上版本的用户，请关闭兼容模式)。</b></h4><br />在所有互联网用户中，使用IE9以下版本浏览器的用户已经不足10%，而已经有超过60%的用户选择了Chrome浏览器，WSS开发团队着重向您推荐Google公司的Chrome浏览器，WSS在Chrome浏览器中将获得出色的表现以及流畅的使用速度（我们并不是Google公司的捆绑销售商）。现在，花3分钟的时间，升级您的浏览器，感受不一样的WSS吧。<a href='https://www.google.com/intl/zh-CN/chrome/browser/' target='_blank' class='alert-link'>免费下载Chrome @ Google</a>";
 
+// *** 部门相关信息
+$multilingual_team_add_title = "增加部门";
+$multilingual_team_edit_title = "编辑部门";
+$multilingual_team_remove_title = "删除部门";
+
+$multilingual_team_newNode = "新增部门";
+
+$multilingual_team_check_team_title = "部门名称不能为空";
+$multilingual_team_check_team_remove_root = "该部门不能删除";
 
 ?>

@@ -2,7 +2,7 @@
 <?php require_once('session_admin.php'); ?>
 <?php
 $restrictGoTo = "user_error3.php";
-if ($_SESSION['MM_rank'] < "5") {   
+if ($_SESSION['MM_rank'] < 4) {   
   header("Location: ". $restrictGoTo); 
   exit;
 }

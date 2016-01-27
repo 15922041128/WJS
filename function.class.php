@@ -1198,7 +1198,7 @@ return $tktype_arr;
 // wangzi add
 // checkIsWorkingDay
 function checkIsWorkingDay($array, $logDay){
-	while(list($key,$val)= each($array)) { 
+	foreach ($array as $key => $val) { 
 	  if($key == $logDay) {
 	  	return $val;
 	  }
