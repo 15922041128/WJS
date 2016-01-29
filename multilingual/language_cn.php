@@ -475,6 +475,8 @@ $multilingual_user_updatetask2 = "的执行人";
 $multilingual_user_newtask1 = "有新的任务";
 $multilingual_user_newtask2 = "指派给您";
 $multilingual_user_birthday = "出生年月";
+$multilingual_user_team = "所属部门";
+$multilingual_user_team2 = "部门";
 $multilingual_user_gender = "性别";
 $multilingual_user_gender_m = "男";
 $multilingual_user_gender_f = "女";
@@ -482,6 +484,8 @@ $multilingual_user_city = "所在地";
 $multilingual_user_city_bj = "北京";
 $multilingual_user_city_tj = "天津";
 $multilingual_user_city_tip = "用户所在地";
+$multilingual_user_team_tip_singleton = "用户所属部门";
+$multilingual_user_team_tip = "用户所属部门，按下 Ctrl 或 Cmd 键可以进行多选";
 $multilingual_user_birthday_tip = "用户出生年月";
 $multilingual_user_gender_tip = "用户性别";
 $multilingual_user_working_life = "工作年限";
@@ -519,6 +523,7 @@ $multilingual_user_list_showdis = "禁用用户";
 $multilingual_user_list_search = "按用户名称搜索";
 // wangzi add
 $multilingual_user_list_post_search = "按用户岗位搜索";
+$multilingual_user_list_team_search = "按用户部门搜索";
 $multilingual_user_view_title = "用户详情";
 $multilingual_user_view_userinfo = "用户基本信息";
 $multilingual_user_view_project = "负责项目";
@@ -720,10 +725,11 @@ $multilingual_browser_check = "<h4><b>您的浏览器版本过低，为了提升
 $multilingual_team_add_title = "增加部门";
 $multilingual_team_edit_title = "编辑部门";
 $multilingual_team_remove_title = "删除部门";
-
 $multilingual_team_newNode = "新增部门";
-
 $multilingual_team_check_team_title = "部门名称不能为空";
 $multilingual_team_check_team_remove_root = "该部门不能删除";
-
+$multilingual_label_selectTeam = "选择部门";
+$multilingual_label_selectTeam_selectChild = "是否查询子部门";
+$multilingual_label_selectTeam_selectChild_Y = "是";
+$multilingual_label_selectTeam_selectChild_N = "否";
 ?>

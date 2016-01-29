@@ -1996,4 +1996,16 @@ $file_view_arr = array ();
 
 return $file_view_arr;
 }
+
+// getAllTeam
+function getAllTeam(){
+	global $tankdb;
+	global $database_tankdb;
+	
+	mysql_select_db($database_tankdb, $tankdb);
+	$query_team = "SELECT * FROM tk_team ";
+	$Recordset_team = mysql_query($query_team, $tankdb) or die(mysql_error());
+	
+	return $Recordset_team;
+}
 ?>

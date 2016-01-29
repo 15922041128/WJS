@@ -2,9 +2,7 @@
 <?php require_once('session_unset.php'); ?>
 <?php require_once('session_admin.php'); ?>
 <?php 
-mysql_select_db($database_tankdb, $tankdb);
-$query_team = "SELECT * FROM tk_team ";
-$Recordset_team = mysql_query($query_team, $tankdb) or die(mysql_error());
+$Recordset_team = getAllTeam();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

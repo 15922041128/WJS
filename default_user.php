@@ -74,9 +74,14 @@ if (isset($_GET['inputPost'])) {
   $post_Recordset1 = $_GET['inputPost'];
 }
 
+$team_Recordset1 = "";
+if (isset($_GET['inputTeam'])) {
+  $team_Recordset1 = $_GET['inputTeam'];
+}
+
 mysql_select_db($database_tankdb, $tankdb);
 // wangzi modify
-$querySQl = "SELECT * FROM tk_user";
+$querySQl = "SELECT team.tk_team_title, user.* FROM tk_user user left join tk_team team on user.tk_user_team = team.pid ";
 $querySQl = $querySQl.sprintf(" WHERE tk_user_rank LIKE %s AND tk_user_rank $where %s AND tk_display_name LIKE %s ",
 GetSQLValueString("%" . $colrole_Recordset1 . "%", "text"),
 GetSQLValueString("%" . $colrole_dis . "%", "text"), 
@@ -92,6 +97,9 @@ if(!empty($company_Recordset1)){
 }
 if(!empty($post_Recordset1)){
 	$querySQl = $querySQl.sprintf(" AND tk_user_post LIKE %s ", GetSQLValueString("%" . $post_Recordset1 . "%", "text"));
+}
+if(!empty($team_Recordset1)){
+	$querySQl = $querySQl.sprintf(" AND tk_user_team IN( $team_Recordset1 )  ");
 }
 $querySQl = $querySQl.sprintf(" $order %s", GetSQLValueString($orderlist, "defined", $orderlist, "NULL"));
 $query_Recordset1 = $querySQl;
@@ -122,15 +130,112 @@ if (!empty($_SERVER['QUERY_STRING'])) {
   }
 }
 $queryString_Recordset1 = sprintf("&totalRows_Recordset1=%d%s", $totalRows_Recordset1, $queryString_Recordset1);
+$Recordset_team = getAllTeam();
 ?>
 <?php require('head.php'); ?>
-<script type="text/JavaScript">
-<!--
-function GP_popupConfirmMsg(msg) { //v1.0
-  document.MM_returnValue = confirm(msg);
+<link rel="StyleSheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<link rel="StyleSheet" href="css/teamTree.css" type="text/css" />
+<script type="text/javascript" src="srcipt/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="srcipt/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="srcipt/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript" src="srcipt/jquery-ui-1.10.4.min.js"></script>
+<script>
+function getChildren(idArray, treeNode) {
+	idArray.push(treeNode.id);
+	if (treeNode.isParent) {
+		for(var obj in treeNode.children){
+			getChildren(idArray,treeNode.children[obj]);
+		}
+	}
+	return idArray;
 }
-//-->
 </script>
+<script type="text/javascript">
+	var setting = {
+		view: {
+			dblClickExpand: false,
+			selectedMulti: true
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			beforeClick: beforeClick,
+			onClick: onClick
+		}
+	};
+
+	var zNodes =[
+	<?php
+	while ($row_team = mysql_fetch_assoc($Recordset_team)) {
+		$pid = $row_team['pid'];
+		$title = $row_team['tk_team_title'];
+		$parentID = $row_team['tk_team_parentID'];
+	?>	
+		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:false, noR:false},
+	<?php
+	}
+	?>	
+	];
+
+	function beforeClick(treeId, treeNode) {
+		
+	}
+	
+	function onClick(e, treeId, treeNode) {
+		var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+		nodes = zTree.getSelectedNodes(),
+		name = "";
+		value = "";
+		nodes.sort(function compare(a,b){return a.id-b.id;});
+		
+		var isSelectChild = $('input[name="selectChild"]:checked').val();
+		for (var i=0, l=nodes.length; i<l; i++) {
+			name += nodes[i].name + ",";
+			
+			if (isSelectChild == '1') {
+				var idArray = new Array();
+				idArray = getChildren(idArray, nodes[i]);
+				for (var j = 0; j < idArray.length; j++) {
+					value += idArray[j] + ",";
+				}
+			} else {
+				value += nodes[i].id + ",";
+			}
+		}
+		if (name.length > 0 ) name = name.substring(0, name.length-1);
+		var teamObj = $("#teamSel");
+		teamObj.attr("value", name);
+		
+		if (value.length > 0 ) value = value.substring(0, value.length-1);
+		var teamValueObj = $("#teamSelVal");
+		teamValueObj.attr("value", value);
+	}
+
+	function showMenu() {
+		var teamObj = $("#teamSel");
+		var teamOffset = $("#teamSel").offset();
+		$("#menuContent").css({left:teamOffset.left + "px", top:teamOffset.top + teamObj.outerHeight() + "px"}).slideDown("fast");
+
+		$("body").bind("mousedown", onBodyDown);
+	}
+	function hideMenu() {
+		$("#menuContent").fadeOut("fast");
+		$("body").unbind("mousedown", onBodyDown);
+	}
+	function onBodyDown(event) {
+		if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+			hideMenu();
+		}
+	}
+
+	$(document).ready(function(){
+		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	});
+</script>
+
 <?php if ($_SESSION['MM_rank'] > "4") {  ?> 
 <div class="subnav">
 
@@ -186,7 +291,7 @@ function GP_popupConfirmMsg(msg) { //v1.0
     				<option value="<?php echo $i ?>"><?php echo $i ?></option>
     			<?php }?>
               </select>
-              <select name="select6" id="select6" class="form-control input-sm">
+              <select name="select6" id="select6" class="form-control input-sm" style="width:240px;">
                 <option value="" selected="selected"><?php echo $multilingual_user_company_default; ?></option>
                 <option value="<?php echo $multilingual_user_company_bjjbf; ?>" ><?php echo $multilingual_user_company_bjjbf; ?></option>
                 <option value="<?php echo $multilingual_user_company_jdjs; ?>" ><?php echo $multilingual_user_company_jdjs; ?></option>
@@ -195,12 +300,21 @@ function GP_popupConfirmMsg(msg) { //v1.0
                 <option value="<?php echo $multilingual_user_company_tjzz; ?>" ><?php echo $multilingual_user_company_tjzz; ?></option>
                 <option value="<?php echo $multilingual_user_company_bjkf; ?>" ><?php echo $multilingual_user_company_bjkf; ?></option>
               </select>
-              <input type="text" name="inputPost" id="inputPost" class="form-control input-sm" placeholder="<?php echo $multilingual_user_list_post_search; ?>">
+              <input type="text" name="inputPost" id="inputPost" class="form-control input-sm" style="width:120px;" placeholder="<?php echo $multilingual_user_list_post_search; ?>">
               <?php //wangzi add end ?>
-			   <input type="text" name="inputtitle" id="inputtitle" class="form-control input-sm" placeholder="<?php echo $multilingual_user_list_search; ?>">
-			   <input type="hidden" name="pagetab" value="<?php echo $pagetabs; ?>">
+			  <input type="text" name="inputtitle" id="inputtitle" class="form-control input-sm" style="width:120px;" placeholder="<?php echo $multilingual_user_list_search; ?>">
+			  <?php //wangzi add strat ?>
+			  <?php echo $multilingual_label_selectTeam_selectChild ?>
+			  <input type="radio" name="selectChild" value="1" checked="true"/><?php echo $multilingual_label_selectTeam_selectChild_Y ?>
+			  <input type="radio" name="selectChild" value="2" /><?php echo $multilingual_label_selectTeam_selectChild_N ?>
+			  <input type="text" id="teamSel" readonly class="form-control input-sm" style="width:240px;" placeholder="<?php echo $multilingual_user_list_team_search; ?>">
+			  <input type="hidden" id="teamSelVal" name="inputTeam" style="width:80px;">
+			  <button type="button" id="menuBtn" onclick="showMenu();" class="btn btn-default btn-sm" ><?php echo $multilingual_label_selectTeam ?></button>
+			  <?php //wangzi add end ?>
+			  <input type="hidden" name="pagetab" value="<?php echo $pagetabs; ?>">
 			   
-			   <button type="submit" name="button11" id="button11" class="btn btn-default btn-sm" /><span class="glyphicon glyphicon-search" style="display:inline;"></span> <?php echo $multilingual_global_searchbtn; ?></button>
+			  <button type="submit" name="button11" id="button11" class="btn btn-default btn-sm" /><span class="glyphicon glyphicon-search" style="display:inline;"></span> <?php echo $multilingual_global_searchbtn; ?></button>
+			   
             </form>
 	  </div>
 
@@ -226,6 +340,28 @@ function GP_popupConfirmMsg(msg) { //v1.0
 	  }
 	  ?>>
 		<?php echo $multilingual_user_title; ?></a></th>
+		
+		<?php // wangzi add start?>
+		<th>
+		<a href="default_user.php?<?php echo $current_url; ?>&sort=tk_user_team&order=<?php 
+	  if ( $sortlist <> "tk_user_team"){
+	  echo "DESC";
+	  }else if( $sortlist == "tk_user_team" && $orderlist == "DESC"){
+	  echo "ASC";
+	  } else {
+	  echo "DESC";
+	  }
+	  ?>" 
+	  <?php 
+	  if($sortlist=="tk_user_team" && $orderlist=="ASC"){
+	  echo "class='sort_asc'";
+	  } else if ($sortlist=="tk_user_team" && $orderlist=="DESC"){
+	  echo "class='sort_desc'";
+	  }
+	  ?>>
+		<?php echo $multilingual_user_team2; ?></a></th>
+		<?php // wangzi add end?>
+		
         <th>
 		<a href="default_user.php?<?php echo $current_url; ?>&sort=tk_user_rank&order=<?php 
 	  if ( $sortlist <> "tk_user_rank"){
@@ -503,6 +639,7 @@ function GP_popupConfirmMsg(msg) { //v1.0
     <?php do { ?>
       <tr>
         <td><a href="user_view.php?recordID=<?php echo $row_Recordset1['uid']; ?>"><?php echo $row_Recordset1['tk_display_name']; ?></a></td>
+        <td><?php echo $row_Recordset1['tk_team_title']; ?>&nbsp;</td>
         <td>
 		<?php
 switch ($row_Recordset1['tk_user_rank'])
@@ -586,6 +723,10 @@ case 5:
 <?php } // Show if recordset empty ?>  
 <p>&nbsp;</p>
 </div><!--pagemargin结束 -->
+<!-- wangzi add -->
+<div id="menuContent" class="menuContent" style="display:none; position: absolute;background-color:#ddd;">
+	<ul id="treeDemo" class="ztree" style="margin-top:0; width:300px;"></ul>
+</div>
 <?php require('foot.php'); ?>
 </body>
 </html>

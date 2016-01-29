@@ -61,7 +61,7 @@ $tk_user_remark = sprintf("%s,", GetSQLValueString(str_replace("%","%%",$_POST['
 
 // wangzi modify
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO tk_user (tk_user_login, tk_user_pass, tk_display_name, tk_user_rank, tk_user_remark, tk_user_contact, tk_user_email, tk_user_backup1, tk_user_birthday, tk_user_gender, tk_user_city, tk_user_working_life, tk_user_company, tk_user_education, tk_user_school, tk_user_join_date, tk_user_post, tk_user_bef_comp) VALUES (%s, %s, %s, %s, $tk_user_remark $tk_user_contact $tk_user_email '', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO tk_user (tk_user_login, tk_user_pass, tk_display_name, tk_user_rank, tk_user_remark, tk_user_contact, tk_user_email, tk_user_backup1, tk_user_birthday, tk_user_gender, tk_user_city, tk_user_working_life, tk_user_company, tk_user_education, tk_user_school, tk_user_join_date, tk_user_post, tk_user_bef_comp, tk_user_team) VALUES (%s, %s, %s, %s, $tk_user_remark $tk_user_contact $tk_user_email '', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['tk_user_login'], "text"),
                        GetSQLValueString($tk_password, "text"),
                        GetSQLValueString($_POST['tk_display_name'], "text"),
@@ -75,7 +75,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['tk_user_school'], "text"),
                        GetSQLValueString($_POST['tk_user_join_date'], "text"),
                        GetSQLValueString($_POST['tk_user_post'], "text"),
-                       GetSQLValueString($_POST['tk_user_bef_comp'], "text"));
+                       GetSQLValueString($_POST['tk_user_bef_comp'], "text"),
+                       GetSQLValueString($_POST['tk_user_team'], "text"));
 
   mysql_select_db($database_tankdb, $tankdb);
   $Result1 = mysql_query($insertSQL, $tankdb) or die(mysql_error());
@@ -87,6 +88,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
   }
   header(sprintf("Location: %s", $insertGoTo));
 }
+
+$Recordset_team = getAllTeam();
 ?>
 <?php require('head.php'); ?>
 <link href="skin/themes/base/lhgcheck.css" rel="stylesheet" type="text/css" />
@@ -96,7 +99,11 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 <link rel="stylesheet" href="bootstrap/css/datepicker3.css" type="text/css"/>
 <link href="skin/themes/base/lhgdialog.css" rel="stylesheet" type="text/css" />
 <link href="skin/themes/base/jquery-ui.min.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="srcipt/jquery.js"></script>
+<link rel="StyleSheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<link rel="StyleSheet" href="css/teamTree.css" type="text/css" />
+<script type="text/javascript" src="srcipt/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="srcipt/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="srcipt/jquery.ztree.exedit-3.5.js"></script>
 <script type="text/javascript" src="srcipt/jquery-ui-1.10.4.min.js"></script>
 <script charset="utf-8" src="editor/lang/zh_CN.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
@@ -142,6 +149,80 @@ window.onload = function()
       slider.slider( "value", this.selectedIndex + 1 );
     });
   });
+</script>
+<script type="text/javascript">
+	var setting = {
+		view: {
+			dblClickExpand: false,
+			selectedMulti: false
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			beforeClick: beforeClick,
+			onClick: onClick
+		}
+	};
+
+	var zNodes =[
+	<?php
+	while ($row_team = mysql_fetch_assoc($Recordset_team)) {
+		$pid = $row_team['pid'];
+		$title = $row_team['tk_team_title'];
+		$parentID = $row_team['tk_team_parentID'];
+	?>	
+		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:false, noR:false},
+	<?php
+	}
+	?>	
+	];
+
+	function beforeClick(treeId, treeNode) {
+		
+	}
+	
+	function onClick(e, treeId, treeNode) {
+		var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+		nodes = zTree.getSelectedNodes(),
+		name = "";
+		value = "";
+		nodes.sort(function compare(a,b){return a.id-b.id;});
+		for (var i=0, l=nodes.length; i<l; i++) {
+			name += nodes[i].name + ",";
+			value += nodes[i].id + ",";
+		}
+		if (name.length > 0 ) name = name.substring(0, name.length-1);
+		var teamObj = $("#teamSel");
+		teamObj.attr("value", name);
+		
+		if (value.length > 0 ) value = value.substring(0, value.length-1);
+		var teamValueObj = $("#teamSelVal");
+		teamValueObj.attr("value", value);
+	}
+
+	function showMenu() {
+		var teamObj = $("#teamSel");
+		var teamOffset = $("#teamSel").offset();
+		$("#menuContent").css({left:teamOffset.left + "px", top:teamOffset.top + teamObj.outerHeight() + "px"}).slideDown("fast");
+
+		$("body").bind("mousedown", onBodyDown);
+	}
+	function hideMenu() {
+		$("#menuContent").fadeOut("fast");
+		$("body").unbind("mousedown", onBodyDown);
+	}
+	function onBodyDown(event) {
+		if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+			hideMenu();
+		}
+	}
+
+	$(document).ready(function(){
+		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	});
 </script>
 <form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -225,6 +306,18 @@ window.onload = function()
               </div>
 
 <?php/*wangzi add start*/?>
+				<div class="form-group col-xs-12">
+                <label for="tk_user_team"><?php echo $multilingual_user_team; ?></label>
+               	<div class="zTreeDemoBackground left">
+					<ul>
+						<a id="menuBtn" href="#" onclick="showMenu(); return false;"><?php echo $multilingual_label_selectTeam ?></a>
+						<input id="teamSel" type="text" readonly value="" class="form-control"/>
+						<input id="teamSelVal" type="hidden" value="0" name="tk_user_team"/>
+					</ul>
+				</div>
+                <span class="help-block"><?php echo $multilingual_user_team_tip_singleton; ?></span>
+                </div>
+
 				<div class="form-group col-xs-12">
                 <label for="datepicker"><?php echo $multilingual_user_birthday; ?><span id="datepicker_msg"></span></label>
                 <div>
@@ -468,6 +561,10 @@ window.onload = function()
 
 
 </form>
+<!-- wangzi add -->
+<div id="menuContent" class="menuContent" style="display:none; position: absolute; background-color:#ddd;">
+	<ul id="treeDemo" class="ztree" style="margin-top:0; width:300px;"></ul>
+</div>
 <?php require('foot.php'); ?>
 </body>
 </html>

@@ -13,7 +13,7 @@ if (isset($_GET['UID'])) {
   $colname_Recordset1 = $_GET['UID'];
 }
 mysql_select_db($database_tankdb, $tankdb);
-$query_Recordset1 = sprintf("SELECT * FROM tk_user WHERE uid = %s", GetSQLValueString($colname_Recordset1, "text"));
+$query_Recordset1 = sprintf("SELECT team.tk_team_title, user.* FROM tk_user user left join tk_team team on user.tk_user_team = team.pid WHERE uid = %s", GetSQLValueString($colname_Recordset1, "text"));
 $Recordset1 = mysql_query($query_Recordset1, $tankdb) or die(mysql_error());
 $row_Recordset1 = mysql_fetch_assoc($Recordset1);
 $totalRows_Recordset1 = mysql_num_rows($Recordset1);
@@ -48,7 +48,7 @@ $tk_user_email = sprintf("tk_user_email=%s", GetSQLValueString(str_replace("%","
 }
 
 if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
-  $updateSQL = sprintf("UPDATE tk_user SET tk_display_name=%s, tk_user_rank=%s, tk_user_birthday=%s, tk_user_gender=%s, tk_user_city=%s, tk_user_working_life=%s, tk_user_company=%s, tk_user_education=%s, tk_user_school=%s, tk_user_join_date=%s, tk_user_post=%s, tk_user_bef_comp=%s,$tk_user_remark $tk_user_contact $tk_user_email WHERE uid=%s",
+  $updateSQL = sprintf("UPDATE tk_user SET tk_display_name=%s, tk_user_rank=%s, tk_user_birthday=%s, tk_user_gender=%s, tk_user_city=%s, tk_user_working_life=%s, tk_user_company=%s, tk_user_education=%s, tk_user_school=%s, tk_user_join_date=%s, tk_user_post=%s, tk_user_bef_comp=%s, tk_user_team=%s,$tk_user_remark $tk_user_contact $tk_user_email WHERE uid=%s",
                        
                        GetSQLValueString($_POST['tk_display_name'], "text"),
                        GetSQLValueString($_POST['tk_user_rank'], "text"),
@@ -62,6 +62,7 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
                        GetSQLValueString($_POST['tk_user_join_date'], "text"),
                        GetSQLValueString($_POST['tk_user_post'], "text"),
                        GetSQLValueString($_POST['tk_user_bef_comp'], "text"),
+                       GetSQLValueString($_POST['tk_user_team'], "int"),
                        GetSQLValueString($_POST['ID'], "int"));
 
   mysql_select_db($database_tankdb, $tankdb);
@@ -74,17 +75,23 @@ if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
   }
 
   header(sprintf("Location: %s", $updateGoTo));
+  
 }
+$Recordset_team = getAllTeam();
 ?>
 <?php require('head.php'); ?>
 <link href="skin/themes/base/custom.css" rel="stylesheet" type="text/css" />
 <link href="skin/themes/base/lhgcheck.css" rel="stylesheet" type="text/css" />
+<link rel="StyleSheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css" />
+<link rel="StyleSheet" href="css/teamTree.css" type="text/css" />
 <script type="text/javascript" src="srcipt/lhgcore.js"></script>
 <script type="text/javascript" src="srcipt/lhgcheck.js"></script>
 <link rel="stylesheet" href="bootstrap/css/datepicker3.css" type="text/css"/>
 <link href="skin/themes/base/lhgdialog.css" rel="stylesheet" type="text/css" />
 <link href="skin/themes/base/jquery-ui.min.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="srcipt/jquery.js"></script>
+<script type="text/javascript" src="srcipt/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="srcipt/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="srcipt/jquery.ztree.exedit-3.5.js"></script>
 <script type="text/javascript" src="srcipt/jquery-ui-1.10.4.min.js"></script>
 <script charset="utf-8" src="editor/lang/zh_CN.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap-datepicker.js"></script>
@@ -128,6 +135,80 @@ window.onload = function()
       slider.slider( "value", this.selectedIndex + 1 );
     });
   });
+</script>
+<script type="text/javascript">
+	var setting = {
+		view: {
+			dblClickExpand: false,
+			selectedMulti: false
+		},
+		data: {
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			beforeClick: beforeClick,
+			onClick: onClick
+		}
+	};
+
+	var zNodes =[
+	<?php
+	while ($row_team = mysql_fetch_assoc($Recordset_team)) {
+		$pid = $row_team['pid'];
+		$title = $row_team['tk_team_title'];
+		$parentID = $row_team['tk_team_parentID'];
+	?>	
+		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:false, noR:false},
+	<?php
+	}
+	?>	
+	];
+
+	function beforeClick(treeId, treeNode) {
+		
+	}
+	
+	function onClick(e, treeId, treeNode) {
+		var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+		nodes = zTree.getSelectedNodes(),
+		name = "";
+		value = "";
+		nodes.sort(function compare(a,b){return a.id-b.id;});
+		for (var i=0, l=nodes.length; i<l; i++) {
+			name += nodes[i].name + ",";
+			value += nodes[i].id + ",";
+		}
+		if (name.length > 0 ) name = name.substring(0, name.length-1);
+		var teamObj = $("#teamSel");
+		teamObj.attr("value", name);
+		
+		if (value.length > 0 ) value = value.substring(0, value.length-1);
+		var teamValueObj = $("#teamSelVal");
+		teamValueObj.attr("value", value);
+	}
+
+	function showMenu() {
+		var teamObj = $("#teamSel");
+		var teamOffset = $("#teamSel").offset();
+		$("#menuContent").css({left:teamOffset.left + "px", top:teamOffset.top + teamObj.outerHeight() + "px"}).slideDown("fast");
+
+		$("body").bind("mousedown", onBodyDown);
+	}
+	function hideMenu() {
+		$("#menuContent").fadeOut("fast");
+		$("body").unbind("mousedown", onBodyDown);
+	}
+	function onBodyDown(event) {
+		if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+			hideMenu();
+		}
+	}
+
+	$(document).ready(function(){
+		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+	});
 </script>
 <form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -201,6 +282,18 @@ window.onload = function()
               </div>
 
 <?php/*wangzi add start*/?>
+				<div class="form-group col-xs-12">
+                <label for="tk_user_team"><?php echo $multilingual_user_team; ?></label>
+               	<div class="zTreeDemoBackground left">
+					<ul>
+						<a id="menuBtn" href="#" onclick="showMenu(); return false;"><?php echo $multilingual_label_selectTeam ?></a>
+						<input id="teamSel" type="text" readonly value="<?php echo $row_Recordset1['tk_team_title']; ?>" class="form-control"/>
+						<input id="teamSelVal" type="hidden" value="<?php echo $row_Recordset1['tk_user_team']; ?>" name="tk_user_team"/>
+					</ul>
+				</div>
+                <span class="help-block"><?php echo $multilingual_user_team_tip_singleton; ?></span>
+                </div>
+
 				<div class="form-group col-xs-12">
                 <label for="datepicker"><?php echo $multilingual_user_birthday; ?><span id="datepicker_msg"></span></label>
                 <div>
@@ -491,6 +584,10 @@ window.onload = function()
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!-- wangzi add -->
+<div id="menuContent" class="menuContent" style="display:none; position: absolute; background-color:#ddd;">
+	<ul id="treeDemo" class="ztree" style="margin-top:0; width:300px;"></ul>
+</div>
 <?php require('foot.php'); ?>
 </body></html><?php
 mysql_free_result($Recordset1);

@@ -43,6 +43,7 @@ word-break: normal;}
 .mouse_over{ cursor:pointer;}
 .addbutton{ margin-right:10px;}
 .submitbutton{ width:120px; margin-left:26px;}
+.selectTeamButton{ width:120px;}
 
 
 .glink a{  text-decoration:none;  color:#0076AE;}
