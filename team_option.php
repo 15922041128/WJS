@@ -3,7 +3,7 @@
 
 $myjson = my_json_encode($arr);
 echo $myjson;
-function my_json_encode($phparr){
+function my_json_encode($arr){
 	global $tankdb;
 	global $database_tankdb;
 	
@@ -35,6 +35,14 @@ function my_json_encode($phparr){
 		$deleteSQL = "delete from tk_team where pid in ($deleteID)";
 	  	mysql_select_db($database_tankdb, $tankdb);
 	  	$result = mysql_query($deleteSQL, $tankdb) or die(mysql_error());
+	  	
+    	return null;
+	} else if ($method == "moveTeam") {
+		$ids = implode(",", $arr['_ids']);
+		$moveTeamSQL = sprintf("update tk_team set tk_team_parentID = %s where pid in ($ids)",
+					GetSQLValueString($arr['parentID'], "int"));
+	  	mysql_select_db($database_tankdb, $tankdb);
+	  	$result = mysql_query($moveTeamSQL, $tankdb) or die(mysql_error());
 	  	
     	return null;
 	}

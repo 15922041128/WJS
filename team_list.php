@@ -26,6 +26,20 @@ function decodeUTF8(str){
 } 
 
 var setting = {
+	edit: {
+		enable: true,
+		renameTitle: "<?php echo $multilingual_team_edit_title ?>",
+		removeTitle: "<?php echo $multilingual_team_remove_title ?>",
+		showRenameBtn: showRenameBtn,
+		showRemoveBtn: showRemoveBtn,
+		drag: {
+			isCopy:false,
+			isMove:true,
+			prev:true,
+			next:true,
+			inner:true
+		}
+	},
 	view: {
 		addHoverDom: addHoverDom,
 		removeHoverDom: removeHoverDom,
@@ -38,17 +52,11 @@ var setting = {
 		onRightClick: OnRightClick,
 		onRename: onRename,
 		onRemove: onRemove,
+		onDrop: onDrop,
 		beforeEditName: beforeEditName,
 		beforeRemove: beforeRemove,
 		beforeRename: beforeRename,
 		beforeDrag: beforeDrag
-	},
-	edit: {
-		enable: true,
-		renameTitle: "<?php echo $multilingual_team_edit_title ?>",
-		removeTitle: "<?php echo $multilingual_team_remove_title ?>",
-		showRenameBtn: showRenameBtn,
-		showRemoveBtn: showRemoveBtn
 	},
 	data: {  
 	    simpleData: {  
@@ -68,7 +76,7 @@ var zNodes =[
 		$parentID = $row_team['tk_team_parentID'];
 		if ($pid == 1){
 	?>	
-		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:true, noR:true},
+		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:true, noR:true, drag:false},
 	<?php	
 		} else {
 	?>
@@ -105,12 +113,8 @@ function showRMenu(type, x, y) {
 	$("#rMenu ul").show();
 	if (type=="root") {
 		$("#m_del").hide();
-//		$("#m_check").hide();
-//		$("#m_unCheck").hide();
 	} else {
 		$("#m_del").show();
-//		$("#m_check").show();
-//		$("#m_unCheck").show();
 	}
 	rMenu.css({"top":y+"px", "left":x+"px", "visibility":"visible"});
 
@@ -157,7 +161,14 @@ function removeTreeNode() {
 
 <!-- setting配置操作 start -->
 function beforeDrag(treeId, treeNodes) {
-	return false;
+	for (var i=0,l=treeNodes.length; i<l; i++) {
+		if (treeNodes[i].drag === false) {
+			return false;
+		} else if (treeNodes[i].parentTId && treeNodes[i].getParentNode().childDrag === false) {
+			return false;
+		}
+	}
+	return true;
 }
 
 function addHoverDom(treeId, treeNode) {
@@ -224,6 +235,24 @@ function getChildren(idArray, treeNode) {
 	}
 	return idArray;
 }
+
+function onDrop(event, treeId, treeNodes, targetNode, moveType) {
+	if (moveType != null) {
+		var idArray = new Array();
+		for (var i = 0; i < treeNodes.length; i++) {
+			idArray.push(treeNodes[i].id);
+		}
+		
+		var targetID = null;
+		if (moveType == 'inner') {
+			targetID = targetNode.id;
+		} else {
+			targetID = targetNode.getParentNode().id;
+		}
+		moveTeam(idArray, targetID);
+	}
+}
+
 <!-- setting配置操作 end -->
 
 <!-- database操作 start -->
@@ -252,9 +281,6 @@ function editTeam(pid, title){
 	        method:"edit",
 	        id:pid, 
 	        title:title
-	      },
-	      function (data) {
-	        // alert(decodeUTF8(data));
 	      }
     );
 }
@@ -267,6 +293,21 @@ function deleteTeam(ids){
 	        pids:ids 
 	      }
     );
+}
+
+function moveTeam(ids, parentID){
+	$.post(
+	      'team_option.php',
+	      {
+	        method:"moveTeam",
+	        _ids:ids,
+	        parentID:parentID
+	      },
+	      function (data) {
+//	       	alert(data);
+	      }
+    );
+	
 }
 
 <!-- database操作 end -->

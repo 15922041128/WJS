@@ -343,7 +343,7 @@ do {
         <button type="button" id="btn1" class="btn btn-default btn-sm" onclick="MM_goToURL('self','<?php echo "log_view.php?date=".$logdate."&taskid=".$taskid; ?>');return document.MM_returnValue"><?php echo $multilingual_global_action_cancel; ?></button>
         <button name="cont" type="button" class="btn btn-primary btn-sm" data-loading-text="<?php echo $multilingual_global_wait; ?>" onClick="submitform()" ><?php echo $multilingual_global_action_save; ?></button>
 		
-		<input type="submit"  id="btn5" value="<?php echo $multilingual_global_action_save; ?>"  style="display:none" />
+		<input type="submit" id="btn5" value="<?php echo $multilingual_global_action_save; ?>"  style="display:none" />
 		
 		<input type="hidden" name="csa_tb_time" id="csa_tb_time" value="<?php echo date("Y-m-d H:i:s"); ?>" />
 	<input type="hidden" name="log_update" value="form1" /><input type="hidden" name="task_update" value="form1" />	

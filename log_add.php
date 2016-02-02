@@ -203,6 +203,7 @@ function submitform()
     });
   });
   </script>
+  
 </head>
 
 <body>
@@ -323,7 +324,7 @@ do {
         <button type="button" id="btn1" class="btn btn-default btn-sm" onclick="over()"><?php echo $multilingual_global_action_cancel; ?></button>
         <button name="cont" type="button" class="btn btn-primary btn-sm" data-loading-text="<?php echo $multilingual_global_wait; ?>" onClick="submitform()"><?php echo $multilingual_global_action_save; ?></button>
 		
-		<input type="submit"  id="btn5" value="<?php echo $multilingual_global_action_save; ?>"  style="display:none" />
+		<input type="submit" id="btn5" value="<?php echo $multilingual_global_action_save; ?>"  style="display:none"/>
 		
 		<input type="hidden" name="csa_tb_year" id="csa_tb_year" value="<?php echo $logdate; ?>" />
 	<input type="hidden" name="csa_tb_backup1" id="csa_tb_backup1" value="<?php echo $taskid; ?>" />

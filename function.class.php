@@ -236,14 +236,26 @@ $insertSQL2 = sprintf("INSERT INTO tk_log (tk_log_user, tk_log_action, tk_log_ty
 function get_tree( $projectid ) {
 global $tankdb;
 global $database_tankdb;
-
+$userID = $_SESSION['MM_uid'];
+$rank = $_SESSION['MM_rank'];
 
 mysql_select_db($database_tankdb, $tankdb);
 $query_Recordset1 = "SELECT * FROM tk_task 
 inner join tk_task_tpye on tk_task.csa_type=tk_task_tpye.id 
 inner join tk_user on tk_task.csa_to_user=tk_user.uid 
-inner join tk_status on tk_task.csa_remark2=tk_status.id 
-WHERE csa_project = '$projectid' ORDER BY TID";
+inner join tk_status on tk_task.csa_remark2=tk_status.id
+inner join tk_project on tk_task.csa_project=tk_project.id
+WHERE csa_project = '$projectid' "; 
+
+if ($_SESSION['MM_rank'] < "5") {
+	if ($_SESSION['MM_rank'] < "4") {
+		$query_Recordset1 = $query_Recordset1." and (csa_to_user = '$userID' or csa_from_user = '$userID') ";
+	} else {
+		$query_Recordset1 = $query_Recordset1." and (csa_to_user = '$userID' or csa_from_user = '$userID' or project_to_user = '$userID' or project_from_user = '$userID') ";
+	}
+}
+
+$query_Recordset1 = $query_Recordset1." ORDER BY TID";
 $Recordset1 = mysql_query($query_Recordset1, $tankdb) or die(mysql_error());
 $row_Recordset1 = mysql_fetch_assoc($Recordset1);
 

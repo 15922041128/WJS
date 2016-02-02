@@ -173,9 +173,15 @@ window.onload = function()
 		$pid = $row_team['pid'];
 		$title = $row_team['tk_team_title'];
 		$parentID = $row_team['tk_team_parentID'];
+		if ($pid == "0") {
 	?>	
+		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:true, noR:false},	
+	<?php 		
+		} else {
+	?>
 		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:false, noR:false},
-	<?php
+	<?php 	
+		}
 	}
 	?>	
 	];

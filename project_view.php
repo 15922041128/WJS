@@ -60,8 +60,19 @@ $query_Recordset_task = sprintf("SELECT *
 							FROM tk_task 								
 							inner join tk_task_tpye on tk_task.csa_type=tk_task_tpye.id								
 							inner join tk_user on tk_task.csa_to_user=tk_user.uid 
-							inner join tk_status on tk_task.csa_remark2=tk_status.id 
-								WHERE csa_project = %s AND csa_remark4 = '-1' ORDER BY csa_last_update DESC", GetSQLValueString($colname_Recordset_task, "text"));
+							inner join tk_status on tk_task.csa_remark2=tk_status.id
+							inner join tk_project on tk_task.csa_project=tk_project.id
+								WHERE csa_project = %s ", GetSQLValueString($colname_Recordset_task, "text"));
+if ($_SESSION['MM_rank'] < "5") {
+	$userID = $_SESSION['MM_uid'];
+	if ($_SESSION['MM_rank'] < "4") {
+		$query_Recordset_task = $query_Recordset_task." and (csa_to_user = '$userID' or csa_from_user = '$userID') ";
+	} else {
+		$query_Recordset_task = $query_Recordset_task." and (csa_to_user = '$userID' or csa_from_user = '$userID' or project_to_user = '$userID' or project_from_user = '$userID') ";
+	}
+}
+								
+$query_Recordset_task = $query_Recordset_task." ORDER BY csa_last_update DESC";								
 $query_limit_Recordset_task = sprintf("%s LIMIT %d, %d", $query_Recordset_task, $startRow_Recordset_task, $maxRows_Recordset_task);
 $Recordset_task = mysql_query($query_limit_Recordset_task, $tankdb) or die(mysql_error());
 $row_Recordset_task = mysql_fetch_assoc($Recordset_task);

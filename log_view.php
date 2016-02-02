@@ -95,6 +95,18 @@ $queryString_Recordset_comment = sprintf("&totalRows_Recordset_comment=%d%s", $t
 $host_url="http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']."?".$_SERVER["QUERY_STRING"];
 $host_url=strtr($host_url,"&","!");
 ?>
+<?php
+// wangzi add
+mysql_select_db($database_tankdb, $tankdb);
+$dayArray = array();
+$queryDaySql = "select * from tk_day";
+$dayResult = mysql_query($queryDaySql);
+while($row=mysql_fetch_array($dayResult)){
+	$day->row_day = $row["day"];
+	$day->row_isWork = $row["isWork"];
+	$dayArray[$row["day"]] = $row["isWork"];
+}
+?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -169,8 +181,14 @@ $logmonth = str_split($logyear[1],2);
             </td>
 			<?php } ?>
             
-            <?php /*wangzi modify*/ ?>
-            <?php if (($_SESSION['MM_rank'] > "4" || $row_log['csa_tb_backup2'] == $_SESSION['MM_uid']) && (date("Ymd",time()) == $logdate || date("Ymd",time()- 24*60*60) == $logdate)) {  ?>
+            <?php 
+            // wangzi modify
+			$curday = date("Ymd");;
+			$pre_day = date("Ymd", time() - 24*60*60);
+			$pre_day = getPreWorkingDay($dayArray, $pre_day);
+			$isWork = checkIsWorkingDay($dayArray, $m1day1);
+            ?>
+            <?php if (($_SESSION['MM_rank'] > "4" || $row_log['csa_tb_backup2'] == $_SESSION['MM_uid']) && ($curday == $logdate || $pre_day == $logdate || $isWork == 0)) {  ?>
             <td width="13%">
 			<a onclick="MM_goToURL('self','<?php echo "log_edit.php?date=".$logdate."&taskid=".$taskid; ?>');return document.MM_returnValue" class="mouse_over"><span class="glyphicon glyphicon-pencil"></span> <?php echo $multilingual_global_action_edit; ?></a>
             </td>

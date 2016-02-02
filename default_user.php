@@ -93,11 +93,11 @@ if ("0" != $working_life_Recordset1) {
 	$querySQl = $querySQl.sprintf(" AND tk_user_working_life <= %s ", GetSQLValueString($working_life_Recordset1, "text"));
 }
 if(!empty($company_Recordset1)){
-	$querySQl = $querySQl.sprintf(" AND tk_user_company LIKE %s ", GetSQLValueString("%" . $company_Recordset1 . "%", "text"));
+	$querySQl = $querySQl.sprintf(" AND tk_user_company = %s ", GetSQLValueString("" . $company_Recordset1 . "", "text"));
 }
-if(!empty($post_Recordset1)){
-	$querySQl = $querySQl.sprintf(" AND tk_user_post LIKE %s ", GetSQLValueString("%" . $post_Recordset1 . "%", "text"));
-}
+//if(!empty($post_Recordset1)){
+//	$querySQl = $querySQl.sprintf(" AND tk_user_post LIKE %s ", GetSQLValueString("%" . $post_Recordset1 . "%", "text"));
+//}
 if(!empty($team_Recordset1)){
 	$querySQl = $querySQl.sprintf(" AND tk_user_team IN( $team_Recordset1 )  ");
 }
@@ -173,9 +173,15 @@ function getChildren(idArray, treeNode) {
 		$pid = $row_team['pid'];
 		$title = $row_team['tk_team_title'];
 		$parentID = $row_team['tk_team_parentID'];
+		if ($pid == "0") {
 	?>	
+		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:true, noR:false},	
+	<?php 		
+		} else {
+	?>
 		{id:<?php echo $pid ?>, pId:<?php echo $parentID ?>, name:"<?php echo $title ?>", open:false, noR:false},
-	<?php
+	<?php 	
+		}
 	}
 	?>	
 	];
@@ -300,7 +306,9 @@ function getChildren(idArray, treeNode) {
                 <option value="<?php echo $multilingual_user_company_tjzz; ?>" ><?php echo $multilingual_user_company_tjzz; ?></option>
                 <option value="<?php echo $multilingual_user_company_bjkf; ?>" ><?php echo $multilingual_user_company_bjkf; ?></option>
               </select>
+              <!-- 
               <input type="text" name="inputPost" id="inputPost" class="form-control input-sm" style="width:120px;" placeholder="<?php echo $multilingual_user_list_post_search; ?>">
+              -->
               <?php //wangzi add end ?>
 			  <input type="text" name="inputtitle" id="inputtitle" class="form-control input-sm" style="width:120px;" placeholder="<?php echo $multilingual_user_list_search; ?>">
 			  <?php //wangzi add strat ?>
