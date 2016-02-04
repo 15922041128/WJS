@@ -106,6 +106,7 @@ $multilingual_error_duplicatetext = "<strong>错误:</strong> 用户名已存在
 $multilingual_error_login = "请重新登录";
 $multilingual_error_logintext = "<strong>错误:</strong> 请核对用户名或密码，";
 $multilingual_error_permissions = "<strong>权限错误:</strong> 您不具备执行该操作的权限，请核对您的权限。";
+$multilingual_error_permissions_timeout = "<strong>超时错误:</strong> 您已超时，<a target='parent' href='user_login.php'>请重新登录。</a>";
 $multilingual_error_permissions1 = "权限错误";
 $multilingual_error_oursite = "该功能还未正式开放,请  <a href='http://www.wssys.net/zh-cn/feature.php' target='_blank'>登录我们的网站</a>  随时了解最新消息.";
 $multilingual_error_date = "请输入正确的日期格式MMMM-YY-DD";

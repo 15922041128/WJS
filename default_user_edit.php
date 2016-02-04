@@ -288,6 +288,8 @@ window.onload = function()
               </div>
 
 <?php/*wangzi add start*/?>
+				<?php if ($_SESSION['MM_rank'] > "4") { ?>	
+
 				<div class="form-group col-xs-12">
                 <label for="tk_user_team"><?php echo $multilingual_user_team; ?></label>
                	<div class="zTreeDemoBackground left">
@@ -438,6 +440,7 @@ window.onload = function()
                 </div>
 				<span class="help-block"><?php echo $multilingual_user_bef_comp_tip; ?></span>
               	</div>
+              	<?php }  ?>
 <?php/*wangzi add end*/?>
 
 			  <div class="form-group col-xs-12">

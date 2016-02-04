@@ -162,7 +162,7 @@ for($i=1; $i<=$monthTotalDay; $i++)
 <script type='text/javascript'>
 function op$i_day()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$i_day&taskid=$taskid&userid=$userid&projectid=$projectid&tasktype=$tasktype' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$i_day&taskid=$taskid&userid=$userid&projectid=$projectid&tasktype=$tasktype&currentDay=$day' });
 }
 
 
@@ -195,7 +195,7 @@ document.write('</div></div>')
 <script type='text/javascript'>
 function op$i_day()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$i_day&taskid=$taskid&userid=$userid&projectid=$projectid&tasktype=$tasktype' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$i_day&taskid=$taskid&userid=$userid&projectid=$projectid&tasktype=$tasktype&currentDay=$day' });
 }
 
 function vi$i_day()
@@ -241,7 +241,7 @@ $OUT['NEXT_MONTH'] = $next_month;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>WSS</title>
+<title>WJS</title>
 <link href="skin/themes/base/lhgdialog.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="srcipt/lhgcore.js"></script>
 <script type="text/javascript" src="srcipt/lhgdialog.js"></script>

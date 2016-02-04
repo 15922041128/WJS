@@ -4,7 +4,6 @@ if (!isset($_SESSION)) {
 }
 
 
-
 $MM_authorizedUsers = $multilingual_dd_role_admin;
 $MM_donotCheckaccess = "true";
 

@@ -1375,6 +1375,8 @@ while($row=mysql_fetch_array($dayResult)){
 	$day->row_isWork = $row["isWork"];
 	$dayArray[$row["day"]] = $row["isWork"];
 }
+
+$currentDayj = date("j");
 ?>     
 <?php do { ?>
      <tr>
@@ -1502,7 +1504,7 @@ $out_row = "
 <script type='text/javascript'>
 function op$row_tid$m1day1()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type&currentDay=$currentDayj' });
 }
 
 
@@ -1550,7 +1552,7 @@ $out_row = "
 <script type='text/javascript'>
 function op$row_tid$m1day1()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type&currentDay=$currentDayj' });
 }
 
 function vi$row_tid$m1day1()
@@ -1599,7 +1601,7 @@ $out_row = "
 <script type='text/javascript'>
 function op$row_tid$m1day1()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type&currentDay=$currentDayj' });
 }
 
 
@@ -1649,7 +1651,7 @@ $out_row = "
 <script type='text/javascript'>
 function op$row_tid$m1day1()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type&currentDay=$currentDayj' });
 }
 
 
@@ -1699,7 +1701,7 @@ $out_row = "
 <script type='text/javascript'>
 function op$row_tid$m1day1()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type&currentDay=$currentDayj' });
 }
 
 
@@ -1749,7 +1751,7 @@ $out_row = "
 <script type='text/javascript'>
 function op$row_tid$m1day1()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type&currentDay=$currentDayj' });
 }
 
 function vi$row_tid$m1day1()
@@ -1798,7 +1800,7 @@ $out_row = "
 <script type='text/javascript'>
 function op$row_tid$m1day1()
 {
-    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type' });
+    J.dialog.get({ id: 'test', title: '$multilingual_default_task_section5', page: 'log_add.php?date=$m1day1&taskid=$row_tid&userid=$row_userid&projectid=$row_pid&tasktype=$row_type&currentDay=$currentDayj' });
 }
 
 

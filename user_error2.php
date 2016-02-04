@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="skin/themes/base/tk_style.css" rel="stylesheet" type="text/css" />
 <link href="skin/themes/base/custom.css" rel="stylesheet" type="text/css" />
-<title>WSS - <?php echo $multilingual_error_login; ?></title>
+<title>WJS - <?php echo $multilingual_error_login; ?></title>
 </head>
 
 <body>

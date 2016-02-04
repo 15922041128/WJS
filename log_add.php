@@ -6,6 +6,14 @@ if ($_SESSION['MM_rank'] < "2") {
   header("Location: ". $restrictGoTo); 
   exit;
 }
+if (isset($_GET['currentDay'])) {
+	$currentDay = $_GET['currentDay'];
+	if (date("j") != $currentDay) {
+		$restrictGoTo = "user_error4.php";
+		header("Location: ". $restrictGoTo);
+		exit;
+	} 
+}
 
 $logdate = $_GET['date'];
 $taskid = $_GET['taskid'];
